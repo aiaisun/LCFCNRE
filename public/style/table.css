@@ -1,0 +1,11 @@
+table {
+    border: #D3D3D3 2px solid;
+}
+
+table tr  th{
+    border: #D3D3D3 2px solid;
+}
+table tr td {
+    border: #D3D3D3 1px solid;
+    width: 8.33%
+}
