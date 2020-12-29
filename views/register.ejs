@@ -1,0 +1,133 @@
+<%- include('parts/html_head') %>
+<%- include('parts/navbar') %>
+<div id="registerFormdiv">
+    <!-- <form id="registerForm" method="POST" enctype="multipart/form-data"> 要把enctype刪掉不然沒有req.body的資訊-->
+
+    <form id="registerForm" method="POST" enctype="application/x-www-form-urlencoded" onsubmit="return checkInfo(this)">
+        <div class="form-group">
+
+            <br />
+            <input type="text" class="col form-control" id="userCName" name="userCName" placeholder="中文姓名" required>
+            <br />
+            <input type="text" class="col form-control" id="userEName" name="userEName" placeholder="英文姓名" required>
+            <br />
+            <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="userDepartment" required>
+              <option selected>部門</option>
+              <option value="HWTP">HWTP</option>
+              <option value="DAE">DAE</option>
+              <option value="BAL">BAL</option>
+              <option value="else">其他</option>
+            </select>
+            <br />
+            <br />
+            <div class="form-row align-items-center">
+
+                <div class="col-auto">
+
+                    <input type="text" class="form-control mb-2" id="userAccount" name="userAccount"
+                        placeholder="ali.sun" style="width: 102px;" required>
+                </div>
+                <div class="col-auto">
+
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup"
+                            placeholder="lcfuturecenter.com" value="lcfuturecenter.com" readonly="value"
+                            style="width: 168px;" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <input type="password" class="form-control" id="password" name="userpassword" onblur="checkpas1();"
+                placeholder="密碼" required>
+            <br />
+            <input type="password" class="form-control" id="repassword" name="repassword" required="true"
+                onChange="checkpas();" placeholder="確認密碼">
+
+            <span class="tip" style="color:#202224">兩次輸入的密碼不一致</span><br>
+
+        </div>
+        <br />
+        <div class="regisbtn">
+            <button id="regisbtn" type="submit" class="btn btn-secondary">註冊</button>
+            <!-- 不知為啥這個就不能用  要改用在form用onsubmit-->
+            <!-- <button id="regisbtn" type="submit" class="btn btn-secondary" onclick="checkInfo()">註冊</button> -->
+            <!-- <input id="regisbtn" class="btn btn-secondary" type="button" name="submit" value="註冊"
+                onclick="checkpas2();" /> -->
+        </div>
+
+    </form>
+</div>
+
+<%- include('parts/html_script') %>
+
+<script>
+
+    $(".tip").hide();
+
+    function checkpas1() { //當第一個密碼框失去焦點時，觸發checkpas1事件
+        var pas1 = $("#password").val();
+        var pas2 = $("#repassword").val(); //獲取兩個密碼框的值
+        if (pas1 != pas2 && pas2 != "") {
+            //此事件當兩個密碼不相等且第二個密碼是空的時候會顯示錯誤資訊
+            $(".tip").show();
+            $("#regisbtn").attr('disabled', true);
+        }
+        else {
+            $(".tip").hide();//若兩次輸入的密碼相等且都不為空時，不顯示錯誤資訊。
+            $("#regisbtn").attr('disabled', false);
+        }
+
+    }
+    function checkpas() {//當第一個密碼框失去焦點時，觸發checkpas事件
+        var pas1 = $("#password").val();
+        var pas2 = $("#repassword").val(); //獲取兩個密碼框的值
+        if (pas1 != pas2) {
+            $(".tip").show();//當兩個密碼不相等時則顯示錯誤資訊
+            $("#regisbtn").attr('disabled', true);
+        } else {
+            $("#regisbtn").attr('disabled', false);
+            $(".tip").hide();
+        }
+    }
+
+    function checkInfo() {
+        var userEmail = $("#userAccount").val();
+        const emailPattern = /\./;
+        var result = userEmail.match(emailPattern);
+        if (result == null) {
+            alert("Email錯誤");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    $('#registerForm').on('submit', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/user/register',
+            type: 'POST',
+            data: new FormData(this),
+            contentType: false,//一定要加
+            cache: false,
+            processData: false,//一定要加
+            dataType: 'json'
+        }).done(function (data) {
+            if (data.alert == "帳號已存在") {
+                alert(data.alert);//帳號存在的話，後段會丟json字串過來
+            }
+
+            else{
+                window.location = 'http://localhost:3000/user/registerSuccess';
+            }
+        })
+    })
+</script>
+
+<%- include('parts/html_foot') %>

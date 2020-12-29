@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"hweb.users"}],"uuid":"725b32313e054c9d9e57051d53150fb3"}

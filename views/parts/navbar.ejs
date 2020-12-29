@@ -1,0 +1,75 @@
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #df1014">
+  <!-- <nav class="navbar navbar-dark bg-dark"> -->
+
+  <a class="navbar-brand" href="/">LCFC TP HW</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <% if (locals.isLogined) { %>
+          Hi, <%= userEName %>
+          <% } else { %>
+          Visitor
+          <% } %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <% if (locals.isLogined) { %>
+          <a class="dropdown-item" href="/user/logout">Logout</a>
+          <% } else { %>
+          <a class="dropdown-item" href="/user/login">Login</a>
+          <% } %>
+                  </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Sighting
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/sighting">Sighting </a>
+          <!-- <a class="dropdown-item" href="/sighting">Issue Database </a> -->
+          
+          <% if (locals.loginUser) {%>
+            <a class="dropdown-item" href="/sightingpersonaldashboard">My Issue List</a>
+          <% }%>
+
+          <% if (locals.sightingrole == "CPU" |  locals.sightingrole == "USBC" | locals.sightingrole == "GPU") { %>
+            <a class="dropdown-item" href="/sightingdashboard">Manager Dashboard</a>
+            <% }  %>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/tlc">TLC </a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Assets
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/facility/booking">Facility</a>
+          <a class="dropdown-item" href="/consumables">Consumable</a>
+          <a class="dropdown-item" href="/tool">Tool</a>
+          <a class="dropdown-item" href="/software">Software</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Admin Check
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="/user/trysession">session</a>
+          <a class="dropdown-item" href="/getip">current IP</a>
+      </li>
+      
+    </ul>
+  </div>
+</nav>

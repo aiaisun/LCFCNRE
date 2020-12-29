@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"hweb.consumables"}],"uuid":"c3f856213ff14fcba8961c2c89f32700"}

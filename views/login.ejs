@@ -1,0 +1,81 @@
+<%- include('parts/html_head') %>
+<%- include('parts/navbar') %>
+<% if (locals.flashMsg) { %>
+    <div class="alert alert-primary" role="alert">
+        <%= flashMsg %>
+    </div>
+    <% } %>
+
+
+<% if (locals.isLogined) { %>
+<div>
+    <div class="registerSuccess">
+        <img src="../lib/pic/tick.png" alt="Girl in a jacket" width="60" height="60">   
+    </div>
+    <div class="registerSuccesstext">
+        <a id="backToLastHref" href="<%= locals.referer %>" style="color:#202224;">登入成功，返回前頁</a>
+    </div>
+    </div>
+<% } else { %>
+<div id="loginForm">
+
+
+    <form method="POST">
+        <div class="form-group">
+
+            <label for="exampleInputEmail1">Email</label>
+
+            <div class="form-row align-items-center">
+
+                <div class="col-auto">
+                    <input type="text" class="form-control mb-2" id="userAccount" name="userAccount"
+                        placeholder="ali.sun" style="width: 102px;" required>
+                </div>
+
+                <div class="col-auto">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">@</div>
+                        </div>
+                        <input type="text" class="form-control" id="inlineFormInputGroup"
+                            placeholder="lcfuturecenter.com" value="lcfuturecenter.com" readonly="value"
+                            style="width: 168px;" disabled>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <label>密碼</label>
+            <input type="password" name="password" class="form-control" required>
+        </div>
+
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">記住我</label>
+        </div>
+        <div class="loginbtn">
+            <button id="loginbtn" type="submit" class="btn btn-secondary">登入</button>
+        </div>
+        <input type="text" class="form-check-input" id="referer" name="referer">
+    </form>
+
+    <div class="smallword">
+        <a href="/user/register" style="color:#202224;">若尚未註冊，請點擊此註冊</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <a href="/user/forgetpw" style="color:#202224;" >忘記密碼</a>
+    </div>
+
+</div>
+<% } %>
+<%- include('parts/html_script') %>
+<script>
+// $('#backToLastHref').attr('href', document.referrer);
+// console.log(document.referrer);
+
+$('#referer').hide()
+$('#referer').val(document.referrer);
+</script>
+<%- include('parts/html_foot') %>

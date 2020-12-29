@@ -1,0 +1,124 @@
+<%- include('parts/html_head') %>
+
+
+
+<form method="POST" class="form-group" id="NREForm" enctype="multipart/form-data">
+    <div id="tlcUpload">
+        
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" name="NREFile" class="custom-file-input" accept=".xlsx"
+                    aria-describedby="inputGroupFileAddon04">
+                <label id="fileName" class="custom-file-label" for="inputGroupFile04">選擇檔案</label>
+            </div>
+            <div class="input-group-append">
+                <input type="submit" id="tlcUploadBTN" class="btn btn-outline-secondary btn-sm" value="Import">
+            </div>
+        </div>
+
+        <div id="parseIcons">
+            <form method="get" id="tlcParse" enctype="multipart/form-data">
+                <div>
+                    <label id="projectName" for="exampleFormControlFile1"></label>
+                    <label id="uploadedTLCFileName" for="exampleFormControlFile1"></label>
+                    <input name="#" type="hidden">
+                </div>
+                <div id="parseIcon">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="parseSTDNRE">Upload Stardard NRE</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="parseTLCVram">Parse VRAM</button>
+                </div>
+                </span>
+            </form>
+        </div>
+        <div id="spinner">
+            <div  class="spinner-border text-secondary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div id="result">
+            <h6 id="parseresult""></h6>
+        </div>
+        <div>            
+            <a id="downloadPath" href="#" download>Download SQS Data</a>
+        </div>
+
+    </div>
+
+</form>
+
+
+
+
+
+
+<%- include('parts/html_script') %>
+<script>
+    // ajax的query tag要用整個form的id，只用button整個報錯
+    $('#parseIcons').hide();
+    $('#downloadPath').hide();
+    $('#parseresult').hide();
+    var project = "";
+    var uploadedTLCFileName = "";
+
+    $('#NREForm').on('submit', function (e) {
+        e.preventDefault();//prevent default post
+        $.ajax({
+            url: '/uploaddata',
+            type: 'POST',
+            data: new FormData(this),//the request data that send to route res.json(req.files)
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: 'json',
+        }).done(function (data) {
+
+            console.log(data);
+            uploadedTLCFilePath = data.data.path;
+            uploadedTLCFileName = data.data.originalname;
+            console.log(uploadedTLCFilePath)
+            console.log(uploadedTLCFileName)
+
+            // $('#tlcForm').hide();
+            // $('#projectName').html("Project Name: &nbsp;&nbsp;  " + project);
+            // $('#uploadedTLCFileName').text("TXT File Name:      " + uploadedTLCFileName);
+            $('#parseIcons').show();
+            $('#fileName').text(uploadedTLCFileName);
+        });
+    });
+
+    $("#spinner").hide();
+    $('#parseSTDNRE').click(function () {
+        //按了parse會顯示project和path 資訊在網頁的console log
+        // console.log("Project: ", project);
+        // console.log("file path: ", uploadedTLCFilePath);
+        // console.log("Sending file path to backend.");
+
+        $('#parseSTDNRE').hide();
+        $('#parseTLCVram').hide();
+        $("#spinner").show();
+
+        $.get('/uploaddata/parsestandardnre', { "FilePath": uploadedTLCFilePath }, function (data) {
+            // console.log("DONE");
+            console.log(data);
+            $("#spinner").hide();
+            if (data) {
+                const downloadPath = data.downloadPath;
+                console.log(downloadPath)
+                console.log(downloadPath.replace("./public/", ""))
+                $("#downloadPath").attr("href", downloadPath);
+                $('#downloadPath').show();
+                $('#parseresult').show();
+                $('#parseresult').text("成功");
+
+            } else {
+                console.log("error");
+                $('#parseresult').show();
+                $('#parseresult').text("Parse 失敗");
+            }
+                 
+        })
+    })
+
+
+</script>
+<%- include('parts/html_foot') %>

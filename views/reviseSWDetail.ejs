@@ -1,0 +1,71 @@
+<%- include('parts/html_head') %>
+<%- include('parts/navbar') %>
+
+<div class="consumables">
+
+    <h5 class="card-title"><%= locals.item %> - <%= locals.list.ID %>
+        <a href="/software/<%= locals._id %>"><img src="../../../lib/pic/back.png"
+                style="width:20px; margin-left: 10px;"></a></h5>
+    <form id="reviseSWSetForm" method="POST" onsubmit="return checkAssetNum(this)">
+
+        <div class="consumablesTable">
+
+            <div class="form-row ">
+
+                <div class="form-group col-md-2">
+                    <label for="hostID">hostID</label>
+                    <input type="text" class="form-control" id="hostID" name="hostID" value='<%= list.hostID %>'>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="expireDate">expireDate:</label>
+                    <input type="text" class="form-control" id="expireDate" name="expireDate"
+                        value='<%= list.expireDate %>'>
+                </div>
+
+            </div>
+
+
+            <div id="addToolAssetList">
+                    <div class="form-group">
+                        <h5><span class="badge badge-secondary">維護紀錄</span></h5>
+
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <span for="hostID">續購起始</span>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <span for="expireDate">續購結束</span>
+                        </div>
+                    </div>
+                    <% for( let i = 0; i < locals.list.purchaseRecord.length; i++){  
+                let record = list.purchaseRecord[i] %>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control" id="purDate" name="newPurDate"
+                                value='<%= record.newPurDate %>'>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <input type="text" class="form-control" id="expireDate" name="newExpireDate"
+                                value='<%= record.newExpDate %>'>
+                        </div>
+                    </div>
+
+
+                    <% } %>
+                
+            </div>
+        </div>
+
+        <div class="consumablesIcon">
+            <button id="addtoolbtn" type="submit" class="btn btn-secondary">修改</button>
+        </div>
+    </form>
+</div>
+
+<%- include('parts/html_script') %>
+
+
+
+<%- include('parts/html_foot') %>
